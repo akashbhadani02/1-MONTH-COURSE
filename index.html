@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Spoken English Course</title>
+
+<style>
+body{
+    font-family:Arial;
+    margin:0;
+    background:#eef2ff;
+}
+
+/* HEADER */
+header{
+    background:#2563eb;
+    color:white;
+    padding:15px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* SEARCH */
+#search{
+    width:90%;
+    max-width:600px;
+    display:block;
+    margin:15px auto;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+/* TOPICS GRID */
+#topics{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:10px;
+    padding:10px;
+}
+
+/* BUTTON */
+button{
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:14px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover{
+    background:#1e40af;
+    transform:scale(1.05);
+}
+
+/* LESSON BOX */
+#box{
+    max-width:800px;
+    margin:20px auto;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    display:none;
+}
+
+#box h2{
+    color:#2563eb;
+}
+
+/* LESSON TEXT */
+.lesson-item{
+    padding:6px 0;
+    border-bottom:1px solid #eee;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+    header{font-size:18px}
+}
+</style>
+</head>
+
+<body>
+
+<header>📘 Spoken English Learning App</header>
+
+<input id="search" placeholder="Search topic..." />
+
+<div id="topics"></div>
+
+<div id="box"></div>
+
+<script>
+const lessons = {
+"Introduction":[
+"Welcome to the Spoken English course.",
+"English is a global language.",
+"It helps in communication worldwide.",
+"You can improve your speaking skills here.",
+"Practice daily to become fluent.",
+"Do not be afraid of mistakes.",
+"Speaking is more important than grammar in the beginning.",
+"Try to speak English every day.",
+"This course is designed for beginners.",
+"Let's start your English learning journey."
+],
+
+"English Alphabet":[
+"A is for Apple.",
+"B is for Ball.",
+"C is for Cat.",
+"D is for Dog.",
+"E is for Elephant.",
+"F is for Fish.",
+"G is for Goat.",
+"H is for Hat.",
+"I is for Ice cream.",
+"J is for Jug."
+],
+
+"Phonics & Sounds":[
+"A says a in Apple.",
+"B sounds like buh in Boy.",
+"C sounds like kuh in Cat.",
+"D sounds like duh in Dog.",
+"E sounds like e in Elephant.",
+"F sounds like fff in Fan.",
+"G sounds like guh in Goat.",
+"H sounds like hhh in Hat.",
+"I sounds like i in Ink.",
+"J sounds like juh in Jug."
+],
+
+"Greetings":[
+"Hello, how are you?",
+"Good morning!",
+"Good afternoon!",
+"Good evening!",
+"Nice to meet you.",
+"How is your day going?",
+"Hope you are fine.",
+"Have a great day.",
+"See you soon.",
+"Take care of yourself."
+],
+
+"Self Introduction":[
+"My name is Rahul.",
+"I am from India.",
+"I am 20 years old.",
+"I am a student.",
+"I live in Surat.",
+"I am learning English.",
+"I want to become fluent.",
+"I like reading books.",
+"I enjoy learning new things.",
+"I am a hardworking person."
+],
+
+"Introducing Others":[
+"This is my friend Amit.",
+"He is a good person.",
+"She is my sister.",
+"He works in an office.",
+"She is very kind.",
+"This is my teacher.",
+"He is very intelligent.",
+"She is my cousin.",
+"They are my classmates.",
+"Please meet my friend."
+],
+
+"Basic Vocabulary":[
+"Book is used for reading.",
+"Pen is used for writing.",
+"Table is used for study.",
+"Chair is for sitting.",
+"Water is important for life.",
+"School is for learning.",
+"Home is where we live.",
+"Food gives us energy.",
+"Car is a vehicle.",
+"Phone is used for communication."
+],
+
+"Numbers":[
+"One, Two, Three, Four, Five.",
+"Six, Seven, Eight, Nine, Ten.",
+"I have two apples.",
+"There are five students.",
+"My number is ten.",
+"She has three books.",
+"He bought one pen.",
+"We need four chairs.",
+"I scored nine marks.",
+"There are seven days in a week."
+],
+
+"Days of the Week":[
+"Monday is the first day of the week.",
+"Tuesday comes after Monday.",
+"Wednesday is the middle of the week.",
+"Thursday is a working day.",
+"Friday is the last working day.",
+"Saturday is a holiday.",
+"Sunday is a rest day.",
+"I go to school on Monday.",
+"We play cricket on Sunday.",
+"Every day is important."
+],
+
+"Months of the Year":[
+"January is the first month.",
+"February has 28 days.",
+"March comes after February.",
+"April has spring season.",
+"May is a hot month.",
+"June starts summer.",
+"July is very warm.",
+"August is rainy season.",
+"September starts school season.",
+"December is the last month."
+],
+
+"Time & Date":[
+"What time is it?",
+"It is 10 o'clock.",
+"Today is Monday.",
+"The date is 16 June.",
+"My watch shows 5 PM.",
+"The meeting is at 3 PM.",
+"I wake up early in the morning.",
+"I sleep at night.",
+"School starts at 8 AM.",
+"Time is very important in life."
+],
+
+"Colors":[
+"The sky is blue.",
+"The apple is red.",
+"The grass is green.",
+"The sun is yellow.",
+"The crow is black.",
+"The milk is white.",
+"I like pink color.",
+"The leaf is green.",
+"The ocean is blue.",
+"Colors make life beautiful."
+],
+
+"Shapes":[
+"The ball is round.",
+"A square has four sides.",
+"A triangle has three sides.",
+"A rectangle has four corners.",
+"The clock is circular.",
+"The box is square.",
+"The pizza is round.",
+"The book is rectangular.",
+"Shapes are everywhere.",
+"We learn shapes in school."
+],
+
+"Family Members":[
+"My father is a teacher.",
+"My mother cooks food.",
+"I have one brother.",
+"I have one sister.",
+"My grandfather is old.",
+"My grandmother tells stories.",
+"My family is very loving.",
+"We eat together.",
+"We live in one house.",
+"Family is very important."
+],
+
+"Relationships":[
+"He is my friend.",
+"She is my best friend.",
+"This is my cousin.",
+"He is my uncle.",
+"She is my aunt.",
+"They are my classmates.",
+"He is my neighbor.",
+"We are colleagues.",
+"She is my teacher.",
+"Good relationships are important."
+],
+
+"Body Parts":[
+"I have two eyes.",
+"I have one nose.",
+"I have two ears.",
+"I use my hands to write.",
+"I walk with my legs.",
+"My head is on top.",
+"My mouth helps me speak.",
+"My teeth help me eat.",
+"My heart keeps me alive.",
+"The human body is amazing."
+],
+
+"Body Parts":[
+"I have two eyes.",
+"I have one nose.",
+"I have two ears.",
+"I use my hands to write.",
+"I walk with my legs.",
+"My head is on top.",
+"My mouth helps me speak.",
+"My teeth help me eat.",
+"My heart keeps me alive.",
+"The human body is amazing."
+],
+
+"Food & Drinks":[
+"I eat rice every day.",
+"I like pizza very much.",
+"She drinks milk in the morning.",
+"We eat fruits for health.",
+"I love Indian food.",
+"Water is very important.",
+"He eats breakfast at 8 AM.",
+"I drink tea in the evening.",
+"Fast food is not very healthy.",
+"Food gives us energy."
+],
+
+"Fruits & Vegetables":[
+"Apple is a healthy fruit.",
+"Mango is the king of fruits.",
+"Banana gives instant energy.",
+"Orange is rich in vitamin C.",
+"I eat vegetables daily.",
+"Carrot is good for eyes.",
+"Tomato is used in cooking.",
+"Potato is a common vegetable.",
+"Spinach is very healthy.",
+"Fruits and vegetables keep us fit."
+],
+
+"Animals":[
+"The dog is very loyal.",
+"The cat is sleeping.",
+"The lion is the king of jungle.",
+"The elephant is very big.",
+"Cows give us milk.",
+"The tiger is very strong.",
+"Monkeys like bananas.",
+"Horses run very fast.",
+"Goats eat grass.",
+"Animals are important for nature."
+],
+
+"Birds":[
+"The parrot can talk.",
+"The eagle flies very high.",
+"The sparrow is a small bird.",
+"The peacock is very beautiful.",
+"Birds can fly in the sky.",
+"They build nests in trees.",
+"The crow is black in color.",
+"The pigeon is very common.",
+"Birds wake up early.",
+"Birds are part of nature."
+],
+
+"Home Vocabulary":[
+"I live in a house.",
+"The kitchen is for cooking.",
+"The bedroom is for sleeping.",
+"The bathroom is clean.",
+"There is a sofa in the room.",
+"The table is made of wood.",
+"The chair is comfortable.",
+"We watch TV in the hall.",
+"The fan gives cool air.",
+"Home is a safe place."
+],
+
+"School Vocabulary":[
+"I go to school every day.",
+"The teacher is teaching.",
+"The student is reading.",
+"We write in notebooks.",
+"The blackboard is green.",
+"I use a pen and pencil.",
+"The classroom is clean.",
+"We learn new things daily.",
+"School is important for education.",
+"I study with my friends."
+],
+
+"Office Vocabulary":[
+"I work in an office.",
+"The manager is in a meeting.",
+"I use a computer daily.",
+"We write reports at work.",
+"The employee is very hardworking.",
+"The office opens at 9 AM.",
+"We attend meetings every day.",
+"I send emails to clients.",
+"The printer is not working.",
+"Office work needs discipline."
+],
+
+"Transportation":[
+"I go to school by bus.",
+"He travels by train.",
+"She drives a car.",
+"We ride a bike.",
+"The airplane flies in the sky.",
+"Public transport is useful.",
+"I take a taxi sometimes.",
+"The bus is crowded.",
+"Trains are fast and cheap.",
+"Transportation helps us travel."
+],
+
+"Weather":[
+"Today is very sunny.",
+"It is raining heavily.",
+"The weather is cloudy.",
+"It is a hot day.",
+"The wind is blowing fast.",
+"It is cold in winter.",
+"The sky looks clear.",
+"We need an umbrella in rain.",
+"Weather changes every day.",
+"I like cool weather."
+],
+
+"Daily Routine":[
+"I wake up at 6 AM.",
+"I brush my teeth.",
+"I take a bath.",
+"I eat breakfast.",
+"I go to school.",
+"I study in class.",
+"I have lunch at 1 PM.",
+"I play in the evening.",
+"I do homework at night.",
+"I sleep at 10 PM."
+],
+
+"Morning Conversation":[
+"Good morning!",
+"Did you sleep well?",
+"Yes, I slept well.",
+"What are your plans today?",
+"I am going to school.",
+"The weather is nice today.",
+"Have you had breakfast?",
+"Yes, I just had tea.",
+"Have a great day ahead.",
+"See you later."
+],
+
+"At Home Conversation":[
+"Please come and eat.",
+"Dinner is ready.",
+"How was your day?",
+"I am feeling tired.",
+"Can you help me?",
+"I am watching TV.",
+"Let's clean the house.",
+"I am doing homework.",
+"Please switch off the fan.",
+"Good night, sleep well."
+],
+
+"At School Conversation":[
+"May I come in sir?",
+"Yes, you may come in.",
+"I have completed my homework.",
+"The teacher is explaining the lesson.",
+"Please open your books.",
+"I did not understand this topic.",
+"Can you repeat please?",
+"The bell has rung.",
+"We are going to the next class.",
+"School is a place to learn."
+],
+
+"At Office Conversation":[
+"Good morning, sir.",
+"Please send me the report.",
+"We have a meeting today.",
+"The project is completed.",
+"I will finish the work soon.",
+"Can you help me with this file?",
+"The manager is busy.",
+"We are working on a deadline.",
+"I will attend the meeting.",
+"Office work requires focus."
+],
+
+"Making Friends":[
+"Hello, what is your name?",
+"My name is Rahul.",
+"Nice to meet you.",
+"Where are you from?",
+"I am from India.",
+"Can we be friends?",
+"How old are you?",
+"I like your personality.",
+"Do you like sports?",
+"Let's stay in touch."
+],
+
+"Talking on Phone":[
+"Hello, who is speaking?",
+"Can you hear me clearly?",
+"I am calling you now.",
+"Please wait for a moment.",
+"I will call you later.",
+"The network is bad.",
+"Can you repeat that?",
+"I missed your call.",
+"Let's talk tomorrow.",
+"Take care, bye."
+],
+
+"Shopping Conversation":[
+"How much does this cost?",
+"I want to buy this shirt.",
+"Do you have another color?",
+"This is too expensive.",
+"Can I get a discount?",
+"Where is the billing counter?",
+"I am just looking around.",
+"I will take this one.",
+"Do you accept card payment?",
+"Thank you for your help."
+],
+
+"Restaurant Conversation":[
+"I would like a menu.",
+"What do you recommend?",
+"I will order a pizza.",
+"Please bring some water.",
+"The food is very tasty.",
+"Can I get the bill?",
+"This dish is spicy.",
+"I am vegetarian.",
+"Service is very good.",
+"Thank you for the meal."
+],
+
+"Hotel Conversation":[
+"I have a reservation.",
+"I want a single room.",
+"Do you have any rooms available?",
+"What is the room rent?",
+"Can I see the room?",
+"Is breakfast included?",
+"Please give me the key.",
+"The room is very clean.",
+"I want to check out.",
+"Thank you for your service."
+],
+
+"Hospital Conversation":[
+"I am not feeling well.",
+"I have a fever.",
+"Please call the doctor.",
+"I need medicine.",
+"I am feeling weak.",
+"Where is the emergency room?",
+"How much is the fee?",
+"I have a headache.",
+"The doctor is very kind.",
+"Thank you for your help."
+],
+
+"Travel Conversation":[
+"I want to travel to Mumbai.",
+"When does the train leave?",
+"Where is the bus station?",
+"I need a ticket.",
+"How long is the journey?",
+"Is this seat available?",
+"I am going on a trip.",
+"Please show me the route.",
+"The flight is delayed.",
+"I enjoy traveling."
+],
+
+"Asking Directions":[
+"Excuse me, where is the bank?",
+"Go straight and turn left.",
+"It is near the market.",
+"How far is the hospital?",
+"Can you help me please?",
+"I am lost.",
+"Is it walking distance?",
+"Turn right at the signal.",
+"The shop is opposite the school.",
+"Thank you for your help."
+],
+
+"Bank Conversation":[
+"I want to open an account.",
+"Please give me a form.",
+"I need to deposit money.",
+"Can I withdraw cash?",
+"What is my balance?",
+"I lost my ATM card.",
+"Where is the cashier?",
+"I need a bank statement.",
+"The staff is very helpful.",
+"Thank you."
+],
+
+"Interview Conversation":[
+"Tell me about yourself.",
+"What are your strengths?",
+"What are your weaknesses?",
+"Why should we hire you?",
+"I am a hard-working person.",
+"I have good communication skills.",
+"I am a quick learner.",
+"I am ready to work in a team.",
+"Thank you for this opportunity.",
+"I am excited for this job."
+],
+
+"Nouns":[
+"A noun is a naming word.",
+"Rahul is a boy.",
+"Mumbai is a big city.",
+"The book is on the table.",
+"The dog is barking.",
+"Apple is a fruit.",
+"School is a place of learning.",
+"The car is fast.",
+"Water is important for life.",
+"The teacher is in the classroom."
+],
+
+"Pronouns":[
+"I am learning English.",
+"You are my friend.",
+"He is a doctor.",
+"She is a teacher.",
+"It is a beautiful dog.",
+"We are students.",
+"They are playing football.",
+"This is my book.",
+"That is your pen.",
+"They are very happy."
+],
+
+"Verbs":[
+"I eat food.",
+"She drinks milk.",
+"He runs fast.",
+"They play cricket.",
+"We study English.",
+"I write a letter.",
+"She reads a book.",
+"He sleeps at night.",
+"They sing a song.",
+"We work in an office."
+],
+
+"Adjectives":[
+"The car is fast.",
+"The house is big.",
+"She is beautiful.",
+"He is very tall.",
+"The food is delicious.",
+"The water is cold.",
+"This is a small room.",
+"The sky is blue.",
+"The boy is smart.",
+"The flower is red."
+],
+
+"Adverbs":[
+"He runs quickly.",
+"She speaks loudly.",
+"They work hard.",
+"He drives carefully.",
+"She sings beautifully.",
+"I always wake up early.",
+"He never lies.",
+"They arrived late.",
+"I speak English fluently.",
+"She walks slowly."
+],
+
+"Prepositions":[
+"The book is on the table.",
+"The cat is under the chair.",
+"He is in the room.",
+"The bag is behind the door.",
+"The picture is above the bed.",
+"I sit near my friend.",
+"The school is next to the park.",
+"The pen is inside the box.",
+"The boy is between two girls.",
+"We live in India."
+],
+
+"Conjunctions":[
+"I like tea and coffee.",
+"He is poor but honest.",
+"You can take tea or coffee.",
+"I was tired so I slept early.",
+"She studied hard because she wanted to pass.",
+"I called him but he did not answer.",
+"We stayed at home because it was raining.",
+"He is smart and intelligent.",
+"Do you want milk or juice?",
+"I ran fast but missed the bus."
+],
+
+"Articles":[
+"I saw a dog.",
+"She ate an apple.",
+"The sun is bright.",
+"A boy is playing.",
+"An elephant is big.",
+"The book on the table is mine.",
+"He is a doctor.",
+"It is an honest man.",
+"The moon is shining.",
+"I bought a pen."
+],
+
+"Simple Present Tense":[
+"I go to school every day.",
+"He plays cricket.",
+"She reads books daily.",
+"They work in an office.",
+"We speak English.",
+"I eat breakfast at 8 AM.",
+"He drinks milk in the morning.",
+"She goes to college.",
+"They watch TV at night.",
+"We live in India."
+],
+
+"Present Continuous Tense":[
+"I am reading a book.",
+"She is cooking food.",
+"He is playing football.",
+"They are watching TV.",
+"We are studying English.",
+"I am writing a letter.",
+"The baby is sleeping.",
+"She is talking on the phone.",
+"They are going to school.",
+"I am learning spoken English."
+],
+
+"Present Perfect Tense":[
+"I have finished my work.",
+"She has completed her homework.",
+"He has gone to school.",
+"They have eaten lunch.",
+"We have seen this movie.",
+"I have read this book.",
+"She has arrived home.",
+"He has lost his pen.",
+"They have started the project.",
+"We have learned English."
+],
+
+"Simple Past Tense":[
+"I went to school yesterday.",
+"He played cricket.",
+"She wrote a letter.",
+"They watched a movie.",
+"We visited Surat.",
+"I ate breakfast.",
+"He drank milk.",
+"She finished her work.",
+"They came home late.",
+"We studied English yesterday."
+],
+
+"Past Continuous Tense":[
+"I was reading a book.",
+"She was cooking dinner.",
+"He was playing football.",
+"They were watching TV.",
+"We were studying English.",
+"I was sleeping at 10 PM.",
+"She was talking on the phone.",
+"The children were playing in the park.",
+"He was driving to office.",
+"We were having lunch at that time."
+],
+
+"Past Perfect Tense":[
+"I had finished my work before dinner.",
+"She had left before I arrived.",
+"He had completed the task.",
+"They had gone home early.",
+"We had eaten before the movie started.",
+"I had seen that film before.",
+"She had already studied the lesson.",
+"He had broken the glass.",
+"They had reached the station.",
+"We had prepared for the exam."
+],
+
+"Simple Future Tense":[
+"I will go to school tomorrow.",
+"She will buy a new dress.",
+"He will play cricket.",
+"They will visit Mumbai.",
+"We will study English.",
+"I will call you later.",
+"She will come soon.",
+"He will help you.",
+"They will travel next week.",
+"We will finish the project."
+],
+
+"Future Continuous Tense":[
+"I will be studying at 8 PM.",
+"She will be cooking dinner.",
+"He will be playing cricket.",
+"They will be watching TV.",
+"We will be working tomorrow.",
+"I will be sleeping at night.",
+"She will be talking on the phone.",
+"He will be driving to office.",
+"They will be traveling tomorrow.",
+"We will be learning English."
+],
+
+"Question Formation":[
+"What is your name?",
+"Where do you live?",
+"How are you?",
+"What do you do?",
+"Where are you going?",
+"Why are you late?",
+"When will you come?",
+"How old are you?",
+"Do you like coffee?",
+"Are you a student?"
+],
+
+"WH Questions":[
+"What is your name?",
+"Where are you from?",
+"When will you come?",
+"Why are you sad?",
+"Who is your teacher?",
+"How are you feeling?",
+"What do you want?",
+"Where is the station?",
+"When did you arrive?",
+"Why are you crying?"
+],
+
+"Yes/No Questions":[
+"Are you a student?",
+"Do you like English?",
+"Is she your sister?",
+"Can you speak English?",
+"Are they coming today?",
+"Do you work in an office?",
+"Is it raining outside?",
+"Have you finished your work?",
+"Did you see that movie?",
+"Will you help me?"
+],
+
+"Negative Sentences":[
+"I do not like tea.",
+"She does not go to school today.",
+"He is not at home.",
+"They are not ready.",
+"We do not eat junk food.",
+"I cannot speak French.",
+"He did not come yesterday.",
+"She is not feeling well.",
+"They will not attend the meeting.",
+"We are not going outside."
+],
+
+"Active Voice":[
+"Rahul writes a letter.",
+"She cooks food.",
+"He plays football.",
+"They watch TV.",
+"We read books.",
+"I eat breakfast.",
+"The teacher teaches English.",
+"The boy kicks the ball.",
+"The dog chases the cat.",
+"They build a house."
+],
+
+"Passive Voice":[
+"A letter is written by Rahul.",
+"Food is cooked by her.",
+"Football is played by him.",
+"TV is watched by them.",
+"Books are read by us.",
+"Breakfast is eaten by me.",
+"English is taught by the teacher.",
+"The ball is kicked by the boy.",
+"The cat is chased by the dog.",
+"A house is built by them."
+],
+
+"Direct & Indirect Speech":[
+"He said, 'I am happy'.",
+"He said that he was happy.",
+"She said, 'I am tired'.",
+"She said that she was tired.",
+"They said, 'We are going'.",
+"They said that they were going.",
+"I said, 'I will come'.",
+"I said that I would come.",
+"He said, 'I have finished'.",
+"He said that he had finished."
+],
+
+"Conditionals":[
+"If you study, you will pass.",
+"If it rains, we will stay home.",
+"If I have money, I will buy a car.",
+"If she calls, I will answer.",
+"If he works hard, he will succeed.",
+"If you heat water, it boils.",
+"If they come, we will go.",
+"If I were rich, I would travel the world.",
+"If she studied, she would pass.",
+"If we had time, we would meet."
+],
+
+"Common Daily Sentences":[
+"How are you?",
+"I am fine, thank you.",
+"What are you doing?",
+"I am going to school.",
+"Please help me.",
+"Thank you very much.",
+"Sorry for the mistake.",
+"See you tomorrow.",
+"Take care of yourself.",
+"Have a nice day."
+],
+
+"100 Most Useful Words": [
+    "I",
+    "you",
+    "he",
+    "she",
+    "it",
+    "we",
+    "they",
+    "me",
+    "him",
+    "her",
+    "my",
+    "your",
+    "his",
+    "her",
+    "our",
+    "their",
+    "this",
+    "that",
+    "these",
+    "those",
+    "am",
+    "is",
+    "are",
+    "was",
+    "were",
+    "be",
+    "been",
+    "being",
+    "have",
+    "has",
+    "had",
+    "do",
+    "does",
+    "did",
+    "will",
+    "would",
+    "can",
+    "could",
+    "should",
+    "must",
+    "go",
+    "come",
+    "see",
+    "know",
+    "get",
+    "make",
+    "take",
+    "give",
+    "work",
+    "play",
+    "eat",
+    "drink",
+    "read",
+    "write",
+    "speak",
+    "listen",
+    "live",
+    "love",
+    "like",
+    "want",
+    "need",
+    "think",
+    "feel",
+    "look",
+    "watch",
+    "call",
+    "help",
+    "start",
+    "stop",
+    "open",
+    "close",
+    "buy",
+    "sell",
+    "pay",
+    "sit",
+    "stand",
+    "walk",
+    "run",
+    "sleep",
+    "wake",
+    "home",
+    "school",
+    "office",
+    "water",
+    "food",
+    "book",
+    "pen",
+    "phone",
+    "car",
+    "time",
+    "day",
+    "night",
+    "morning",
+    "evening",
+    "today",
+    "tomorrow",
+    "yesterday",
+    "people",
+    "friend",
+    "family"
+],
+
+"100 Most Useful Sentences": [
+    "I am a student.",
+    "You are my friend.",
+    "He is a teacher.",
+    "She is very kind.",
+    "It is very hot today.",
+    "We are learning English.",
+    "They are working hard.",
+    "I have a book.",
+    "You have a pen.",
+    "He has a car.",
+    "She has a mobile phone.",
+    "We have a meeting.",
+    "They have a house.",
+    "I go to school daily.",
+    "You come here often.",
+    "He goes to office.",
+    "She goes to market.",
+    "We go together.",
+    "They go outside.",
+    "I like coffee.",
+    "You like tea.",
+    "He likes music.",
+    "She likes dancing.",
+    "We like reading books.",
+    "They like playing cricket.",
+    "I eat rice every day.",
+    "You eat fruits.",
+    "He eats breakfast.",
+    "She eats lunch.",
+    "We eat dinner together.",
+    "They eat food.",
+    "I drink water.",
+    "You drink milk.",
+    "He drinks tea.",
+    "She drinks juice.",
+    "We drink coffee.",
+    "They drink water.",
+    "I read a book.",
+    "You read newspapers.",
+    "He reads stories.",
+    "She reads novels.",
+    "We read together.",
+    "They read books.",
+    "I write a letter.",
+    "You write neatly.",
+    "He writes emails.",
+    "She writes stories.",
+    "We write notes.",
+    "They write messages.",
+    "I speak English.",
+    "You speak well.",
+    "He speaks softly.",
+    "She speaks clearly.",
+    "We speak together.",
+    "They speak Hindi.",
+    "I listen to music.",
+    "You listen carefully.",
+    "He listens to teacher.",
+    "She listens to songs.",
+    "We listen daily.",
+    "They listen attentively.",
+    "I work in an office.",
+    "You work hard.",
+    "He works in a shop.",
+    "She works at school.",
+    "We work together.",
+    "They work in a company.",
+    "I wake up early.",
+    "You wake up late.",
+    "He wakes up at 6 AM.",
+    "She wakes up early.",
+    "We wake up together.",
+    "They wake up early.",
+    "I sleep at night.",
+    "You sleep well.",
+    "He sleeps early.",
+    "She sleeps late.",
+    "We sleep peacefully.",
+    "They sleep at home.",
+    "I am happy.",
+    "You are sad.",
+    "He is busy.",
+    "She is free.",
+    "We are ready.",
+    "They are tired.",
+    "I love my family.",
+    "You love your parents.",
+    "He loves his job.",
+    "She loves music.",
+    "We love our country.",
+    "They love traveling.",
+    "I help my friends.",
+    "You help me.",
+    "He helps others.",
+    "She helps children.",
+    "We help people.",
+    "They help everyone."
+],
+
+"Idioms":[
+"Break the ice means start conversation.",
+"Hit the nail on the head means exactly right.",
+"A piece of cake means very easy.",
+"Once in a blue moon means very rare.",
+"Under the weather means feeling sick.",
+"Burn the midnight oil means study late night.",
+"Costs an arm and a leg means very expensive.",
+"Let the cat out of the bag means reveal secret.",
+"Kill two birds with one stone means two tasks at once.",
+"Hit the road means start a journey."
+],
+
+"Phrases":[
+"How are you doing?",
+"What's going on?",
+"See you later.",
+"Take it easy.",
+"Good luck!",
+"All the best.",
+"I don't know.",
+"I am not sure.",
+"That's fine.",
+"No problem."
+],
+
+"Collocations":[
+"Make a decision.",
+"Take a break.",
+"Do homework.",
+"Have a meeting.",
+"Give a presentation.",
+"Make a mistake.",
+"Catch a bus.",
+"Pay attention.",
+"Save time.",
+"Take action."
+],
+
+"Synonyms":[
+"Big means large.",
+"Small means little.",
+"Happy means joyful.",
+"Fast means quick.",
+"Beautiful means pretty.",
+"Smart means intelligent.",
+"Begin means start.",
+"End means finish.",
+"Help means assist.",
+"Buy means purchase."
+],
+
+"Antonyms":[
+"Hot is opposite of cold.",
+"Big is opposite of small.",
+"Happy is opposite of sad.",
+"Fast is opposite of slow.",
+"Day is opposite of night.",
+"Love is opposite of hate.",
+"Old is opposite of young.",
+"Rich is opposite of poor.",
+"Come is opposite of go.",
+"Up is opposite of down."
+],
+
+"Pronunciation Practice":[
+"Speak slowly and clearly.",
+"Repeat after me.",
+"Practice every day.",
+"Listen carefully to sounds.",
+"Focus on correct words.",
+"Do not rush while speaking.",
+"Read aloud daily.",
+"Record your voice.",
+"Correct your mistakes.",
+"Improve step by step."
+],
+
+"Listening Practice":[
+"Listen carefully to English audio.",
+"Try to understand meaning.",
+"Repeat what you hear.",
+"Watch English videos daily.",
+"Focus on pronunciation.",
+"Do not translate word by word.",
+"Listen to native speakers.",
+"Practice every day.",
+"Take notes while listening.",
+"Improve your understanding skills."
+],
+
+"Speaking Practice":[
+"Speak English daily.",
+"Do not fear mistakes.",
+"Practice with friends.",
+"Talk in front of mirror.",
+"Use simple sentences.",
+"Think in English.",
+"Speak slowly and clearly.",
+"Repeat daily conversations.",
+"Join speaking groups.",
+"Be confident while speaking."
+],
+
+"Reading Practice":[
+"Read English books daily.",
+"Start with simple texts.",
+"Read aloud for practice.",
+"Understand meaning slowly.",
+"Do not skip words.",
+"Use dictionary if needed.",
+"Read newspapers in English.",
+"Improve vocabulary through reading.",
+"Read short stories.",
+"Practice every day."
+],
+
+"Writing Practice":[
+"Write simple sentences daily.",
+"Start with basic English.",
+"Write about your day.",
+"Check grammar mistakes.",
+"Use new vocabulary.",
+"Practice handwriting.",
+"Write short paragraphs.",
+"Improve step by step.",
+"Do not be afraid of errors.",
+"Write regularly to improve."
+],
+
+"Public Speaking":[
+"Good morning everyone.",
+"Today I am going to speak about myself.",
+"Public speaking builds confidence.",
+"Speak clearly and slowly.",
+"Maintain eye contact with audience.",
+"Do not fear mistakes.",
+"Practice before speaking.",
+"Use simple language.",
+"Stand straight and confident.",
+"Thank you for listening."
+],
+
+"Group Discussion":[
+"I agree with your point.",
+"In my opinion, this is correct.",
+"Can I add something?",
+"That is a good idea.",
+"I think we should discuss more.",
+"I partially agree with you.",
+"What do you think about this?",
+"Let us consider both sides.",
+"That is an important point.",
+"Thank you for sharing."
+],
+
+"Presentation Skills":[
+"Good morning everyone.",
+"Welcome to my presentation.",
+"Today I will talk about this topic.",
+"Let me explain step by step.",
+"This is very important point.",
+"As you can see here.",
+"Let us move to next slide.",
+"In conclusion, this is useful.",
+"Thank you for your attention.",
+"Do you have any questions?"
+],
+
+"Storytelling":[
+"Once upon a time there was a boy.",
+"He lived in a small village.",
+"He was very honest and kind.",
+"One day he went to forest.",
+"He saw a big lion.",
+"He helped a wounded animal.",
+"The animal became his friend.",
+"Everyone appreciated his kindness.",
+"He became a hero in village.",
+"The moral of the story is kindness is powerful."
+],
+
+"Debate Practice":[
+"I strongly agree with this topic.",
+"I disagree with this statement.",
+"My first point is important.",
+"Let me explain my opinion.",
+"That is not correct.",
+"I respect your view but I differ.",
+"Here is my argument.",
+"Let us consider facts.",
+"I conclude that I am right.",
+"Thank you for listening."
+],
+
+"Email Writing":[
+"Dear Sir/Madam,",
+"I am writing this email to inform you.",
+"Hope you are doing well.",
+"Please find the attached document.",
+"I would like to request information.",
+"Kindly reply at your convenience.",
+"Thank you for your support.",
+"I look forward to your response.",
+"Best regards.",
+"Sincerely, Rahul."
+],
+
+"Formal English":[
+"I would like to inform you about the meeting.",
+"Kindly accept my request.",
+"I am writing to you regarding this matter.",
+"Please find the attached document.",
+"I would be grateful for your support.",
+"Could you please help me?",
+"I regret to inform you this.",
+"Thank you for your cooperation.",
+"I look forward to your reply.",
+"Yours sincerely."
+],
+
+"Business English":[
+"We need to discuss this project.",
+"Let us schedule a meeting.",
+"The report is ready for review.",
+"Please send me the details.",
+"We are working on this deadline.",
+"The client is satisfied.",
+"We should improve our strategy.",
+"This is a business opportunity.",
+"Let us finalize the deal.",
+"Thank you for your business."
+],
+
+"Customer Service English":[
+"How may I help you?",
+"Please tell me your problem.",
+"I am sorry for the inconvenience.",
+"We will resolve your issue.",
+"Can I assist you with anything else?",
+"Thank you for contacting us.",
+"Please wait for a moment.",
+"I understand your concern.",
+"We are here to help you.",
+"Have a great day."
+],
+
+"Meeting English":[
+"Let us start the meeting.",
+"Good morning everyone.",
+"The agenda is ready.",
+"Please share your ideas.",
+"Let us discuss this point.",
+"I agree with you.",
+"We need more time.",
+"Let us take a decision.",
+"The meeting is over.",
+"Thank you all."
+],
+
+"Job Interview Preparation":[
+"Tell me about yourself.",
+"What are your strengths?",
+"What are your weaknesses?",
+"Why do you want this job?",
+"I am a quick learner.",
+"I have good communication skills.",
+"I can work in a team.",
+"I am hardworking and honest.",
+"I want to grow in this company.",
+"Thank you for this opportunity."
+],
+
+"Resume Vocabulary":[
+"Name and contact details.",
+"Career objective is important.",
+"Educational qualifications.",
+"Work experience details.",
+"Skills and abilities.",
+"Computer knowledge.",
+"Languages known.",
+"Achievements and awards.",
+"Personal information.",
+"Declaration at the end."
+],
+
+"HR Questions":[
+"What are your strengths?",
+"What are your weaknesses?",
+"Why should we hire you?",
+"Where do you see yourself in 5 years?",
+"Tell me about yourself.",
+"Why do you want this job?",
+"Are you a team player?",
+"What is your experience?",
+"Can you work under pressure?",
+"What are your salary expectations?"
+],
+
+"English Quiz Level 1":[
+"What is your name?",
+"How are you?",
+"What is A for?",
+"What is 1 in English?",
+"What color is the sky?",
+"Is dog an animal?",
+"Do you like English?",
+"What is your age?",
+"Is water important?",
+"Do you go to school?"
+],
+
+"English Quiz Level 2":[
+"Make a sentence with eat.",
+"Convert to past tense: go.",
+"What is opposite of hot?",
+"What is plural of child?",
+"Use 'is' in a sentence.",
+"Make question using 'where'.",
+"Correct: He are happy.",
+"What is synonym of big?",
+"Make negative sentence.",
+"What is present continuous tense?"
+],
+
+"English Quiz Level 3":[
+"Change into passive voice.",
+"Convert direct to indirect speech.",
+"Identify tense in sentence.",
+"Make conditional sentence.",
+"Correct grammar mistakes.",
+"Use adverb in sentence.",
+"Form WH question.",
+"Explain idiom meaning.",
+"Make complex sentence.",
+"Write formal sentence."
+],
+
+"Vocabulary Challenge":[
+"Learn 10 new words daily.",
+"Use new words in sentences.",
+"Practice speaking new vocabulary.",
+"Revise old words regularly.",
+"Read English books daily.",
+"Watch English videos.",
+"Write new words in notebook.",
+"Speak with friends in English.",
+"Test yourself daily.",
+"Improve step by step."
+],
+
+"Speaking Challenge":[
+"Speak for 2 minutes daily.",
+"Talk about your day.",
+"Describe your family.",
+"Speak in front of mirror.",
+"Record your voice.",
+"Practice pronunciation.",
+"Speak without fear.",
+"Use simple sentences.",
+"Try new words.",
+"Improve confidence."
+],
+
+"Final Assessment":[
+"Complete all lessons.",
+"Take grammar test.",
+"Take speaking test.",
+"Take writing test.",
+"Check vocabulary knowledge.",
+"Test listening skills.",
+"Review mistakes.",
+"Practice weak areas.",
+"Improve daily performance.",
+"Prepare for certificate test."
+],
+
+"Certificate Test":[
+"Answer all questions correctly.",
+"Complete speaking task.",
+"Complete writing task.",
+"Pass grammar test.",
+"Show good vocabulary.",
+"Speak confidently.",
+"Understand basic English.",
+"Score above passing marks.",
+"Submit final assignment.",
+"Get your certificate."
+],
+};
+
+// CREATE TOPICS
+const topicsDiv = document.getElementById("topics");
+const box = document.getElementById("box");
+
+function showLesson(title){
+    box.style.display = "block";
+    box.innerHTML = `
+        <h2>${title}</h2>
+        ${lessons[title].map(i => `<div class="lesson-item">✔ ${i}</div>`).join("")}
+    `;
+}
+
+// LOAD BUTTONS
+function loadTopics(filter=""){
+    topicsDiv.innerHTML = "";
+    Object.keys(lessons)
+    .filter(t => t.toLowerCase().includes(filter.toLowerCase()))
+    .forEach(t=>{
+        let btn = document.createElement("button");
+        btn.innerText = t;
+        btn.onclick = () => showLesson(t);
+        topicsDiv.appendChild(btn);
+    });
+}
+
+loadTopics();
+
+// SEARCH FUNCTION
+document.getElementById("search").addEventListener("input", e=>{
+    loadTopics(e.target.value);
+});
+</script>
+
+</body>
+</html>
