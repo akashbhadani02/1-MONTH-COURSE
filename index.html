@@ -5,16 +5,17 @@
 
 <style>
 body{
-    font-family:Arial;
+    font-family: 'Poppins', Arial;
     margin:0;
-    background:#eef2ff;
+    background: linear-gradient(135deg,#e0e7ff,#f0f9ff);
+    min-height:100vh;
 }
 
 /* HEADER */
 header{
-    background:#2563eb;
+    background: linear-gradient(90deg,#2563eb,#4f46e5);
     color:white;
-    padding:15px;
+    padding:18px;
     text-align:center;
     font-size:22px;
     font-weight:bold;
@@ -25,61 +26,63 @@ header{
     width:90%;
     max-width:600px;
     display:block;
-    margin:15px auto;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #ccc;
-}
-
-/* TOPICS GRID */
-#topics{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:10px;
-    padding:10px;
-}
-
-/* BUTTON */
-button{
+    margin:18px auto;
     padding:12px;
+    border-radius:12px;
+    border:1px solid #ccc;
+    outline:none;
+}
+
+/* DROPDOWN */
+.dropdown{
+    width:90%;
+    max-width:600px;
+    margin:10px auto;
+}
+
+select{
+    width:100%;
+    padding:14px;
+    border-radius:12px;
     border:none;
-    border-radius:10px;
+    font-size:15px;
     background:#2563eb;
     color:white;
-    font-size:14px;
+    outline:none;
     cursor:pointer;
-    transition:0.2s;
-}
-
-button:hover{
-    background:#1e40af;
-    transform:scale(1.05);
+    box-shadow:0 4px 10px rgba(0,0,0,0.15);
 }
 
 /* LESSON BOX */
 #box{
     max-width:800px;
-    margin:20px auto;
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    margin:25px auto;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(10px);
+    padding:22px;
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
     display:none;
+    animation:fadeIn 0.4s ease;
 }
 
 #box h2{
     color:#2563eb;
 }
 
-/* LESSON TEXT */
 .lesson-item{
-    padding:6px 0;
+    padding:8px 0;
     border-bottom:1px solid #eee;
 }
 
-/* MOBILE */
-@media(max-width:600px){
-    header{font-size:18px}
+.lesson-item:hover{
+    color:#4f46e5;
+    padding-left:8px;
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
 }
 </style>
 </head>
@@ -90,11 +93,17 @@ button:hover{
 
 <input id="search" placeholder="Search topic..." />
 
-<div id="topics"></div>
+<div class="dropdown">
+    <select id="topicSelect">
+        <option value="">-- Select Topic --</option>
+    </select>
+</div>
 
 <div id="box"></div>
 
 <script>
+
+// LESSON DATA
 const lessons = {
 "Introduction":[
 "I am Rahul.",
@@ -6213,11 +6222,29 @@ const lessons = {
 ],
 };
 
-// CREATE TOPICS
-const topicsDiv = document.getElementById("topics");
 const box = document.getElementById("box");
+const select = document.getElementById("topicSelect");
 
+// LOAD DROPDOWN
+function loadDropdown(filter=""){
+    select.innerHTML = `<option value="">-- Select Topic --</option>`;
+
+    Object.keys(lessons)
+    .filter(t => t.toLowerCase().includes(filter.toLowerCase()))
+    .forEach(t=>{
+        let opt = document.createElement("option");
+        opt.value = t;
+        opt.innerText = t;
+        select.appendChild(opt);
+    });
+}
+
+loadDropdown();
+
+// SHOW LESSON
 function showLesson(title){
+    if(!title) return;
+
     box.style.display = "block";
     box.innerHTML = `
         <h2>${title}</h2>
@@ -6225,33 +6252,17 @@ function showLesson(title){
     `;
 }
 
-// LOAD BUTTONS
-function loadTopics(filter=""){
-    topicsDiv.innerHTML = "";
-    Object.keys(lessons)
-    .filter(t => t.toLowerCase().includes(filter.toLowerCase()))
-    .forEach(t=>{
-        let btn = document.createElement("button");
-        btn.innerText = t;
-        btn.onclick = () => showLesson(t);
-        topicsDiv.appendChild(btn);
-    });
-}
-
-loadTopics();
-
-// SEARCH FUNCTION
-document.getElementById("search").addEventListener("input", e=>{
-    loadTopics(e.target.value);
+// ON CHANGE DROPDOWN
+select.addEventListener("change", e=>{
+    showLesson(e.target.value);
 });
+
+// SEARCH FILTER
+document.getElementById("search").addEventListener("input", e=>{
+    loadDropdown(e.target.value);
+});
+
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
