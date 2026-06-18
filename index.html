@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spoken English Course</title>
 
 <style>
 body{
-    font-family: 'Poppins', Arial;
+    font-family: Arial;
     margin:0;
     background: linear-gradient(135deg,#e0e7ff,#f0f9ff);
     min-height:100vh;
@@ -31,33 +32,35 @@ header{
     border-radius:12px;
     border:1px solid #ccc;
     outline:none;
+    font-size:16px;
 }
 
-/* DROPDOWN */
+/* DROPDOWN WRAPPER */
 .dropdown{
     width:90%;
     max-width:600px;
     margin:10px auto;
 }
 
+/* SELECT */
 select{
     width:100%;
     padding:14px;
     border-radius:12px;
     border:none;
-    font-size:15px;
+    font-size:16px;
     background:#2563eb;
     color:white;
     outline:none;
     cursor:pointer;
-    box-shadow:0 4px 10px rgba(0,0,0,0.15);
 }
 
 /* LESSON BOX */
 #box{
+    width:90%;
     max-width:800px;
     margin:25px auto;
-    background: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.9);
     backdrop-filter: blur(10px);
     padding:22px;
     border-radius:16px;
@@ -68,11 +71,13 @@ select{
 
 #box h2{
     color:#2563eb;
+    font-size:22px;
 }
 
 .lesson-item{
     padding:8px 0;
     border-bottom:1px solid #eee;
+    font-size:16px;
 }
 
 .lesson-item:hover{
@@ -80,9 +85,55 @@ select{
     padding-left:8px;
 }
 
+/* ANIMATION */
 @keyframes fadeIn{
     from{opacity:0; transform:translateY(10px);}
     to{opacity:1; transform:translateY(0);}
+}
+
+/* 🔥 RESPONSIVE DESIGN */
+@media (max-width:768px){
+    header{
+        font-size:18px;
+        padding:14px;
+    }
+
+    #search{
+        font-size:14px;
+        padding:10px;
+    }
+
+    select{
+        font-size:14px;
+        padding:12px;
+    }
+
+    #box{
+        padding:16px;
+    }
+
+    #box h2{
+        font-size:18px;
+    }
+
+    .lesson-item{
+        font-size:14px;
+    }
+}
+
+@media (max-width:480px){
+    header{
+        font-size:16px;
+    }
+
+    #search, select{
+        width:95%;
+    }
+
+    #box{
+        width:95%;
+        margin:15px auto;
+    }
 }
 </style>
 </head>
@@ -103,7 +154,6 @@ select{
 
 <script>
 
-// LESSON DATA
 const lessons = {
 "Introduction":[
 "I am Rahul.",
@@ -6225,7 +6275,6 @@ const lessons = {
 const box = document.getElementById("box");
 const select = document.getElementById("topicSelect");
 
-// LOAD DROPDOWN
 function loadDropdown(filter=""){
     select.innerHTML = `<option value="">-- Select Topic --</option>`;
 
@@ -6241,23 +6290,44 @@ function loadDropdown(filter=""){
 
 loadDropdown();
 
-// SHOW LESSON
+function speak(text){
+    let speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-US";
+    speech.rate = 0.9;
+    speech.pitch = 1;
+    window.speechSynthesis.speak(speech);
+}
+
 function showLesson(title){
     if(!title) return;
 
     box.style.display = "block";
     box.innerHTML = `
         <h2>${title}</h2>
-        ${lessons[title].map(i => `<div class="lesson-item">✔ ${i}</div>`).join("")}
+        ${lessons[title].map(i => `
+            <div class="lesson-item">
+                ✔ ${i}
+                <button onclick="speak('${i}')" 
+                style="
+                    margin-left:10px;
+                    padding:5px 10px;
+                    border:none;
+                    border-radius:8px;
+                    background:#10b981;
+                    color:white;
+                    cursor:pointer;
+                ">
+                    🔊 Speak
+                </button>
+            </div>
+        `).join("")}
     `;
 }
 
-// ON CHANGE DROPDOWN
 select.addEventListener("change", e=>{
     showLesson(e.target.value);
 });
 
-// SEARCH FILTER
 document.getElementById("search").addEventListener("input", e=>{
     loadDropdown(e.target.value);
 });
